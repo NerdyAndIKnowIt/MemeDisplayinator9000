@@ -2,3 +2,4 @@ AppCredentials.py
 credentials.cpython-311.pyc
 __pycache__/credentials.cpython-311.pyc
 __pycache__/AppCredentials.cpython-311.pyc
+__pycache__/*
