@@ -1,6 +1,7 @@
 import AppCredentials
 import praw
 import requests
+import os
 
 # login using reddits api keys
 def login():
@@ -24,14 +25,16 @@ def RetrievePosts(RedditCredentials, SubredditGroup):
     for submission in RedditCredentials.subreddit(SubredditGroup).top(limit=10, time_filter="month"):
         if submission.url.endswith((".jpg", ".png")):
             
+            #convert the scrapped info to a title string, then add that string to a list of all the titles from a sub
             group = f"{SubredditGroup}"
             author = f"{submission.author}"
             title = f"{submission.title}"
             
-            TitleVariable = "In r/" + group + ", u/" + author + " said: " + title
+            TitleVariable = "In r/" + group + ", u/" + author + " said: " + title + "\n"
             TitleList.append(TitleVariable)
             print(f"Title: {TitleVariable}")
             
+            #add all URLs to a URL list for the memez
             print(f"Image URL: {submission.url}")
             ImageURLList.append(submission.url)
 
@@ -42,74 +45,113 @@ def DownloadImages(ImageURLDownloadList):
     try:
         
         ImageSavePath = []
-        x = 0
+        index = 0
         
-        for x in ImageURLDownloadList:
+        for CurrentURL in ImageURLDownloadList:
             
-            CurrentURL = ImageURLDownloadList[x]
-            
-            ImageSavePath[x] = CurrentURL[18:]
+            print(f"CurrentURL {CurrentURL}")
+            ImageSavePath.append(CurrentURL[18:])
             
             # Send a GET request to the image URL
-            response = requests.get(ImageURLDownloadList[x])
+            response = requests.get(CurrentURL) #response = requests.get(ImageURLDownloadList[x])
         
             # Raise an exception if the request was not successful
             response.raise_for_status()
         
             # Write the content of the response to a file
-            with open(ImageSavePath[x], 'wb') as file:
+            with open(ImageSavePath[index], 'wb') as file:
                 file.write(response.content)
         
-            print(f"Image successfully downloaded: {ImageSavePath[x]}")
+            print(f"Image successfully downloaded: {ImageSavePath[index]}")
+            
+            index += 1
+            
     except requests.exceptions.RequestException as e:
         print(f"Failed to download the image: {e}")
+
+#delete the MemeTitlez.txt file if it already exists to not have any duplicate info
+def DeleteTitleFile():
+    if os.path.exists("MemeTitlez.txt"):
+        print("MemeTitlez.txt exists, deleting file...")
+        os.remove("MemeTitlez.txt")
+    else:
+        print("MemeTitlez.txt does not exist")
+
+#write the titles to the title file, so they can be used by the web front end
+def WriteTitleFile(WriteTitleList):
+    
+    for title in WriteTitleList:
+        print(f"Adding {title} to MemeTitlez.txt")
+        file = open("MemeTitlez.txt", "a", encoding="utf-8", errors="ignore")
+        file.write(title)
 
 
 # call the login function
 RedditCredentials = login()
+
+#delete the MemeTitlez.txt file if it already exists to not have any duplicate info
+DeleteTitleFile()
 
 # call each subreddit with the retrieveposts function, and store the titles 
 SubredditGroup = "iiiiiiitttttttttttt"
 iiiiiiittttttttttttTitleList, iiiiiiittttttttttttURLList = RetrievePosts(RedditCredentials, SubredditGroup)
 if iiiiiiittttttttttttURLList:
     DownloadImages(iiiiiiittttttttttttURLList)
+if iiiiiiittttttttttttTitleList:
+    WriteTitleFile(iiiiiiittttttttttttTitleList)
 
 SubredditGroup = "ProgrammerHumor"
 ProgrammerHumorTitleList, ProgrammerHumorURLList = RetrievePosts(RedditCredentials, SubredditGroup)
 if ProgrammerHumorURLList:
     DownloadImages(ProgrammerHumorURLList)
+if ProgrammerHumorTitleList:
+    WriteTitleFile(ProgrammerHumorTitleList)
 
 SubredditGroup = "ShittySysadmin"
 ShittySysadminTitleList, ShittySysadminURLList = RetrievePosts(RedditCredentials, SubredditGroup)
 if ShittySysadminURLList:
     DownloadImages(ShittySysadminURLList)
+if ShittySysadminURLList:
+    WriteTitleFile(ShittySysadminTitleList)
 
 SubredditGroup = "Sysadminhumor"
 SysadminhumorTitleList, SysadminhumorURLList = RetrievePosts(RedditCredentials, SubredditGroup)
 if SysadminhumorURLList:    
     DownloadImages(SysadminhumorURLList)
+if SysadminhumorTitleList:
+    WriteTitleFile(SysadminhumorTitleList)
 
 SubredditGroup = "windowsmemes"
 windowsmemesTitleList, windowsmemesURLList = RetrievePosts(RedditCredentials, SubredditGroup)
 if windowsmemesURLList:
     DownloadImages(windowsmemesURLList)
+if windowsmemesTitleList:
+    WriteTitleFile(windowsmemesTitleList)
 
 SubredditGroup = "cablegore"
 cablegoreTitleList, cablegoreURLList = RetrievePosts(RedditCredentials, SubredditGroup)
 if cablegoreURLList:
     DownloadImages(cablegoreURLList)
+if cablegoreTitleList:
+    WriteTitleFile(cablegoreTitleList)
 
 SubredditGroup = "networkingmemes"
 networkingmemesTitleList, networkingmemesURLList = RetrievePosts(RedditCredentials, SubredditGroup)
 if networkingmemesURLList:
     DownloadImages(networkingmemesURLList)
+if networkingmemesTitleList:
+    WriteTitleFile(networkingmemesTitleList)
 
 SubredditGroup = "linuxmasterrace"
 linuxmasterraceTitleList, linuxmasterraceURLList = RetrievePosts(RedditCredentials, SubredditGroup)
 if linuxmasterraceURLList:
     DownloadImages(linuxmasterraceURLList)
+if linuxmasterraceTitleList:
+    WriteTitleFile(linuxmasterraceTitleList)
 
 SubredditGroup = "programmingmemes"
 programmingmemesTitleList, programmingmemesURLList = RetrievePosts(RedditCredentials, SubredditGroup)
 if programmingmemesURLList:
     DownloadImages(programmingmemesURLList)
+if programmingmemesTitleList:
+    WriteTitleFile(programmingmemesTitleList)
