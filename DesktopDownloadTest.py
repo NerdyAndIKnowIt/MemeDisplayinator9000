@@ -1,7 +1,8 @@
-import AppCredentials
-import praw
-import requests
-import os
+import AppCredentials #da creds
+import praw # reddit API wrapper
+import requests #for the URL GET requests
+import os #for creating, editing and deleting files and folders
+from pathlib import Path
 
 # login using reddits api keys
 def login():
@@ -29,8 +30,10 @@ def RetrievePosts(RedditCredentials, SubredditGroup):
             group = f"{SubredditGroup}"
             author = f"{submission.author}"
             title = f"{submission.title}"
+            url = f"{submission.url}"
+            url = url[18:]
             
-            TitleVariable = "In r/" + group + ", u/" + author + " said: " + title + "\n"
+            TitleVariable = url + "In r/" + group + ", u/" + author + " said: " + title + "\n"
             TitleList.append(TitleVariable)
             print(f"Title: {TitleVariable}")
             
@@ -43,14 +46,17 @@ def RetrievePosts(RedditCredentials, SubredditGroup):
 #given the list of image URLs of a sub, download the images
 def DownloadImages(ImageURLDownloadList):
     try:
-        
         ImageSavePath = []
         index = 0
+        folder = "memez"
+        Path(folder).mkdir(parents=True, exist_ok=True)
         
         for CurrentURL in ImageURLDownloadList:
             
             print(f"CurrentURL {CurrentURL}")
             ImageSavePath.append(CurrentURL[18:])
+            
+            ImageSavePath[index] = Path(folder) / ImageSavePath[index]
             
             # Send a GET request to the image URL
             response = requests.get(CurrentURL) #response = requests.get(ImageURLDownloadList[x])
@@ -69,6 +75,26 @@ def DownloadImages(ImageURLDownloadList):
     except requests.exceptions.RequestException as e:
         print(f"Failed to download the image: {e}")
 
+def DeleteOldMemez(TitleList):
+    
+    ReadTitle = ""
+    DeleteTitle = []
+    DeleteMemeURL = ""
+    
+    file = open("MemeTitlez.txt", "r+", encoding="utf-8", errors="ignore")
+    
+    for index in file:
+        ReadTitle = file.readline(index)
+        CompareTitle = TitleList[index]
+        
+        if ReadTitle != CompareTitle:
+            
+            file
+
+    
+    return
+    
+
 #delete the MemeTitlez.txt file if it already exists to not have any duplicate info
 def DeleteTitleFile():
     if os.path.exists("MemeTitlez.txt"):
@@ -84,13 +110,13 @@ def WriteTitleFile(WriteTitleList):
         print(f"Adding {title} to MemeTitlez.txt")
         file = open("MemeTitlez.txt", "a", encoding="utf-8", errors="ignore")
         file.write(title)
-
+    file.close()
 
 # call the login function
 RedditCredentials = login()
 
 #delete the MemeTitlez.txt file if it already exists to not have any duplicate info
-DeleteTitleFile()
+
 
 # call each subreddit with the retrieveposts function, and store the titles 
 SubredditGroup = "iiiiiiitttttttttttt"

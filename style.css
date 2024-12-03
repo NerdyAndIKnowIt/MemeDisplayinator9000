@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'galactic-storm-font';
+    src: url('./galactic-storm-font/GalacticStorm3D-XGA6G.otf');
+}
+
+header {
+    font-family: 'galactic-storm-font';
+}
