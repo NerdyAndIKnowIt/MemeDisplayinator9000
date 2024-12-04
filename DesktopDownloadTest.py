@@ -59,7 +59,7 @@ def DownloadImages(ImageURLDownloadList):
             ImageSavePath[index] = Path(folder) / ImageSavePath[index]
             
             # Send a GET request to the image URL
-            response = requests.get(CurrentURL) #response = requests.get(ImageURLDownloadList[x])
+            response = requests.get(CurrentURL) 
         
             # Raise an exception if the request was not successful
             response.raise_for_status()
@@ -75,25 +75,19 @@ def DownloadImages(ImageURLDownloadList):
     except requests.exceptions.RequestException as e:
         print(f"Failed to download the image: {e}")
 
-def DeleteOldMemez(TitleList):
-    
-    ReadTitle = ""
-    DeleteTitle = []
-    DeleteMemeURL = ""
-    
-    file = open("MemeTitlez.txt", "r+", encoding="utf-8", errors="ignore")
-    
-    for index in file:
-        ReadTitle = file.readline(index)
-        CompareTitle = TitleList[index]
+# delete the old memes to make way for the new ones
+def DeleteMemez():
+    try:
+        folder = "memez"
+        print("Delete da memez")
         
-        if ReadTitle != CompareTitle:
-            
-            file
-
-    
-    return
-    
+        for file in os.listdir(folder):
+            FilePath = os.path.join(folder, file)
+            os.remove(FilePath)
+            print(f"Deleted: {FilePath}")
+        print("All memez deleted successfully")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 #delete the MemeTitlez.txt file if it already exists to not have any duplicate info
 def DeleteTitleFile():
@@ -116,7 +110,8 @@ def WriteTitleFile(WriteTitleList):
 RedditCredentials = login()
 
 #delete the MemeTitlez.txt file if it already exists to not have any duplicate info
-
+DeleteTitleFile()
+DeleteMemez()
 
 # call each subreddit with the retrieveposts function, and store the titles 
 SubredditGroup = "iiiiiiitttttttttttt"
