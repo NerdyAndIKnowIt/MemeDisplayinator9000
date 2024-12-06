@@ -5,3 +5,7 @@ __pycache__/AppCredentials.cpython-311.pyc
 __pycache__/*
 memez
 MemeTitlez.txt
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
