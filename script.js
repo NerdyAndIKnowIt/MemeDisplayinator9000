@@ -1,50 +1,44 @@
-async function ReadMemeFile() {
-    try {
-        // Fetch the text file
-        const response = await fetch('MemeTitlez.txt');
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
-        // Read the content as text
-        const text = await response.text();
+function fetchImageTitles() {
+    return fetch('MemeTitlez.txt')
+        .then(response => response.text())
+        .then(text => {
+            const lines = text.split('\n'); //each image and cooresponding comment are on each line in the MemeTitlez.txt file
+            const images = [];
 
-        // Split the text into lines
-        const lines = text.split(/\r?\n/); // Handles both Windows (\r\n) and Unix (\n) line endings
+            //split the image file names from the comments in the text file in the images array
+            for (let i = 0; i < lines.length; i++) { 
+                const parts = lines[i].split('~/'); 
+                images.push({
+                    fileName: parts[0].trim(), 
+                    title: parts[1] ? parts[1].trim() : ''
+                });
+            }
+            images.pop(); // delete the last item of the image array, which is blank
 
-        // Process each line
-        lines.forEach((line, index) => {
-            console.log(`Line ${index + 1}: ${line}`);
+            return images;
         });
-
-        // Example: Store each line as variables
-        const [line1, image1, line2, image2, line3, image3] = lines;
-
-    } 
-    catch (error) {
-        console.error("Error reading the text file:", error);
-    }
-
-    showSlides();
 }
 
-let slideIndex = 0;
-showSlides();
+function setupSlideshow() {
+    const folderPath = './memez/'; 
+    const slideshowImg = document.getElementById('slide');
+    const slideshowTitle = document.getElementById('title');
+    let currentIndex = 0;
 
-function showSlides() {
-    let i;
-    let slides = document.getElementsByClassName("mySlides");
-    let dots = document.getElementsByClassName("dot");
+    fetchImageTitles().then(imageList => {
+        //using the fetchImageTitles function, call the folder path, image name and image title and display them using .getElementById
+        function showSlide(index) {
+            slideshowImg.src = `${folderPath}${imageList[index].fileName}`;
+            slideshowTitle.textContent = imageList[index].title;
+        }
 
-    for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";  
-    }
+        showSlide(currentIndex);
 
-    slideIndex++;
-
-    if (slideIndex > slides.length) {
-        slideIndex = 1
-    } 
-
-    slides[slideIndex-1].style.display = "block";  
-    
-    setTimeout(showSlides, 2000); // Change image every 2 seconds
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % imageList.length;
+            showSlide(currentIndex);
+        }, 30000); // timing of the slideshow is adjusted here, 30000 is 30 seconds
+    });
 }
+
+setupSlideshow();

@@ -33,7 +33,7 @@ def RetrievePosts(RedditCredentials, SubredditGroup):
             url = f"{submission.url}"
             url = url[18:]
             
-            TitleVariable = url + "In r/" + group + ", u/" + author + " said: " + title + "\n"
+            TitleVariable = url + "~/In r/" + group + ", u/" + author + " said: " + title + "\n"
             TitleList.append(TitleVariable)
             print(f"Title: {TitleVariable}")
             

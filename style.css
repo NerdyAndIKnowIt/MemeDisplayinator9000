@@ -3,6 +3,66 @@
     src: url('./galactic-storm-font/GalacticStorm3D-XGA6G.otf');
 }
 
+body {
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    text-align: center;
+    color: black;
+    background-image: url("./img/background.jpg");
+    background-size: 100%;
+}
+
 header {
     font-family: 'galactic-storm-font';
+    color: #fff;
+    text-shadow: 2px 2px #0112ff;
+    font-size: 6em;
+    margin: .5%;
+}
+
+#meme-section {
+    align-items: center;
+    justify-content: center;
+}
+
+#title-box {
+    width: 80%;
+    max-width: 60%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+}
+
+
+#title {
+    margin-top: 10px;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+
+#slideshow-box {
+    width: 60%;
+    height: 70%;
+    max-width: 80%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0 auto;
+    overflow: hidden
+}
+
+
+#slide {
+    max-width: 90%;
+    height: 70%;
+    
+}
+
+#footer-text {
+    max-width: 25%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto; 
 }
