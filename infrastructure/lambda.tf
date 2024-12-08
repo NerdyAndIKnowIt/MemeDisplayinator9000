@@ -1,8 +1,8 @@
 resource "aws_lambda_function" "lambda" {
-  filename         = "lambda_function_payload.zip" # lambda package
+  filename         = "LambdaPackage.zip" # lambda package
   function_name    = "meme_retriever_lambda"
   role             = aws_iam_role.lambda_exec.arn
-  handler          = "index.handler"
+  handler          = "LambdaPythonPackage.LambdaHandler"
   runtime          = "python3.11"
 }
 
@@ -37,6 +37,18 @@ resource "aws_iam_role_policy" "lambda_policy" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:logs:*:*:*"
+      },
+      {
+        Action   = [
+            "s3:PutObject",
+            "s3:DeleteObject",
+            "s3:ListBucket"
+        ]
+        Effect   = "Allow"
+        Resource = [
+            "arn:aws:s3:::MemeDisplayinator9000.com", 
+            "arn:aws:s3:::MemeDisplayinator9000.com/*"       
+        ]
       }
     ]
   })
