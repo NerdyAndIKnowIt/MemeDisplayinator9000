@@ -1,8 +1,13 @@
 resource "aws_s3_bucket" "bucket" {
   bucket = var.domain_name
   force_destroy = true
+}
 
-  cors_rule { # added cross origin resource sharing to get the slideshow to work
+# added cross origin resource sharing to get the slideshow to work
+resource "aws_s3_bucket_cors_configuration" "bucket_cors" {
+  bucket = aws_s3_bucket.bucket.id
+
+  cors_rule {
     allowed_headers = ["*"] 
     allowed_methods = ["GET", "HEAD", "OPTIONS"]
     allowed_origins = ["https://${var.domain_name}"] 
