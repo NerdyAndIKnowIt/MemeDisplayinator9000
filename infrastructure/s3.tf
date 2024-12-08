@@ -9,7 +9,7 @@ resource "aws_s3_bucket_cors_configuration" "bucket_cors" {
 
   cors_rule {
     allowed_headers = ["*"] 
-    allowed_methods = ["GET", "HEAD", "OPTIONS"]
+    allowed_methods = ["GET", "HEAD"]
     allowed_origins = ["https://${var.domain_name}"] 
     expose_headers  = ["ETag"]
     max_age_seconds = 3000
