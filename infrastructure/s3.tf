@@ -1,6 +1,14 @@
 resource "aws_s3_bucket" "bucket" {
   bucket = var.domain_name
   force_destroy = true
+
+  cors_rule { # added cross origin resource sharing to get the slideshow to work
+    allowed_headers = ["*"] 
+    allowed_methods = ["GET", "HEAD", "OPTIONS"]
+    allowed_origins = ["https://${var.domain_name}"] 
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "public_access" {
