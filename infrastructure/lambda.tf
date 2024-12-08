@@ -49,6 +49,11 @@ resource "aws_iam_role_policy" "lambda_policy" {
             "arn:aws:s3:::MemeDisplayinator9000.com", 
             "arn:aws:s3:::MemeDisplayinator9000.com/*"       
         ]
+      },
+      {
+        Action   = "secretsmanager:GetSecretValue"
+        Effect   = "Allow"
+        Resource = var.secret_arn
       }
     ]
   })
