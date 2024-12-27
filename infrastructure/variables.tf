@@ -21,8 +21,8 @@ variable "region" {
 }
 
 variable "secret_arn" {
-  type        = string
-  default     = "default"
+  type    = string
+  default = "default"
 }
 
 

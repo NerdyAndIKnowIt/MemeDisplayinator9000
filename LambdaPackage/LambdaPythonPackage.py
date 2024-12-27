@@ -109,7 +109,7 @@ def WriteTitleFile(WriteTitleList):
     
     for title in WriteTitleList:
         print(f"Adding {title} to MemeTitlez.txt")
-        file = open("MemeTitlez.txt", "a", encoding="utf-8", errors="ignore")
+        file = open("/tmp/MemeTitlez.txt", "a", encoding="utf-8", errors="ignore")
         file.write(title)
     file.close()
 

@@ -50,6 +50,7 @@ Now is your chance to forget all of that and laugh all of your fears away with t
 - v1.00 - First working version, fixed a cross origin resource permissions issue with the S3 bucket
 - v1.01 - fixed a permissions issue with the lambda function accessing secrets manager
 - v1.02 - added readme and architecture diagram
+- v1.03 - increased the memory of the lambda and fixed an error with the lambda trying to save the text file in the wrong directory
 
 
 ### Known Issues and TODO

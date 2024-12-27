@@ -5,7 +5,7 @@ data "aws_iam_policy_document" "website_policy" {
     ]
     principals {
       identifiers = ["*"]
-      type = "AWS"
+      type        = "AWS"
     }
     resources = [
       "arn:aws:s3:::${var.domain_name}/*"
